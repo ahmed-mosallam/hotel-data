@@ -1,0 +1,109 @@
+<!-- search dates part -->
+<div class="card col-md-12">
+    <div class="card-header text-center">
+        Search Hotel
+    </div>
+    <div class="card-body">
+        <div class="form-inline col-md-12">
+            <div class="col-md-9 mr-8">
+
+                <input type="date" class="form-control mr-2"  placeholder="check in" #checkIn>
+                <input type="date" class="form-control"  placeholder="check out" #checkOut>
+            </div>
+            <div class="col-md-3 float-right">
+                <button type="button" class="btn btn-primary"
+                    (click)="getSearchData(checkIn.value,checkOut.value)">Search
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <!-- form-inline -->
+        </div>
+
+
+        <!-- card-body -->
+    </div>
+    <!-- card -->
+</div>
+<br><br><br>
+    <!--  serch results & sorting & filter part -->
+<div class="col-md-12" [class.d-none]="checkInDate==undefined||checkOutDate==undefined">
+    <!-- search results & sorting part -->
+    <div class="col-md-8 float-right">
+        <div class="card">
+            <div class="card-header ">
+                <span class="text-primary mr-3"> sorting </span> <span> displaying 3 hotels of {{allHotelData.length}} hotels </span>
+                <span>  Total Nights : {{numberOfNights}}</span>
+            </div>
+            <div class="card-body">
+               <div class="form-inline">
+                   <button class="btn btn-primary mr-4" (click)="sortPriceDesc(limitedHotelData)">High Price</button>
+                   <button class="btn btn-primary mr-4" (click)="sortPriceAsc(limitedHotelData)">Low Price</button>
+                   <button class="btn btn-primary mr-4" (click)="sortNamesAtoZ(limitedHotelData)">A-Z Hotel</button>
+                   <button class="btn btn-primary mr-4" (click)="sortNamesZtoA(limitedHotelData)">Z-A Hotel</button>
+               </div>
+                <!-- card-body -->
+            </div>
+            <!-- card -->
+        </div>
+        <div class="card" *ngFor="let hotel of limitedHotelData">
+            <div class="card-header text-center">
+                {{hotel.name}}
+            </div>
+            <div class="card-body">
+                <span>City : {{hotel.city}}</span>
+                <hr />
+                <span>Price :{{hotel.price * numberOfNights |  currency:'USD':'symbol' }} </span>
+                <!-- card-body -->
+            </div>
+            <!-- card -->
+            
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary mt-3" (click)="getLimitedHotelData()" >Load More..</button>
+           </div>
+         <!-- col md-8 -->
+    </div>
+      <!-- filter part -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header text-center">
+                price
+            </div>
+            <div class="card-body">
+                <ng5-slider [(value)]="value" [options]="options" (valueChange)="filterByPrice(value)"></ng5-slider>
+                <!-- card-body -->
+            </div>
+            <!-- card -->
+        </div>
+        <div class="card">
+            <div class="card-header text-center">
+               City Name
+            </div>
+            <div class="card-body" *ngFor="let hotel of limitedHotelData">
+                <input type="checkbox"  class="form-check-input" (change)="filterByCity(hotel.city,$event)"> {{hotel.city}}
+                <hr />
+                <!-- card-body -->
+            </div>
+            <div class="text-center">
+                <button class="btn btn-light font-weight-bold mt-3" (click)="getLimitedHotelData()" >Show More >></button>
+               </div>
+            <!-- card -->
+        </div>
+        <div class="card">
+            <div class="card-header text-center"> 
+                Hotel Name
+            </div>
+            <div class="card-body" *ngFor="let hotel of limitedHotelData">
+                <input type="checkbox"  class="form-check-input" (change)="filterByName(hotel.name,$event)"> {{hotel.name}}
+                <hr />
+                <!-- card-body -->
+            </div>
+            <div class="text-center">
+                <button class="btn btn-light font-weight-bold mt-3" (click)="getLimitedHotelData()" >Show More >></button>
+            </div>
+            <!-- card -->
+        </div>
+         <!-- col md-4 -->
+    </div>
+     <!-- col md-12 -->
+</div>
